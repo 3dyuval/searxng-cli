@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: SearXNG Documentation
+    url: https://docs.searxng.org/
+    about: Official SearXNG documentation
+  - name: SearXNG Search Syntax
+    url: https://docs.searxng.org/user/search-syntax.html
+    about: Search syntax reference (!bangs, :lang, etc.)
