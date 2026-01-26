@@ -5,7 +5,7 @@
 - SearXNG instance
 - `curl`
 - `xdg-open` (Linux) or `open` (macOS)
-- `carapace` (optional, for shell completions)
+- [`carapace-spec`](https://github.com/carapace-sh/carapace-spec) (optional, for shell completions)
 
 ## Environment Variables
 
@@ -42,4 +42,5 @@ xng paris # opens browser
 
 ### CLI output
 
-xng -f json paris # returns JSON
+xng -o json paris # returns JSON
+xng -o url paris  # prints the URL without fetching

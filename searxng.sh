@@ -4,29 +4,23 @@
 SEARXNG_CONFIG="${SEARXNG_CONFIG:-/etc/searxng/settings.yml}"
 SEARXNG_URL="${SEARXNG_URL:-http://localhost:8855}"
 
-# Register carapace completion for xng (if in zsh and carapace available)
-if [[ -n "$ZSH_VERSION" ]] && command -v carapace &>/dev/null; then
-  compdef _carapace xng 2>/dev/null
-fi
-
-# Install xng wrapper and carapace completions
+# Install xng wrapper
 searxng_install() {
+  local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
   # Create wrapper script
   mkdir -p ~/.local/bin
-  cat >~/.local/bin/xng <<'WRAPPER'
+  cat >~/.local/bin/xng <<WRAPPER
 #!/bin/bash
-source ~/proj/searxng.sh/searxng.sh
-_xng "$@"
+source "$script_dir/searxng.sh"
+_xng "\$@"
 WRAPPER
   chmod +x ~/.local/bin/xng
-  echo "Installed xng to ~/.local/bin/xng"
-
-  # Link carapace spec
-  mkdir -p ~/.config/carapace/specs
-  ln -sf ~/proj/searxng.sh/searxng.yaml ~/.config/carapace/specs/xng.yaml
-  echo "Linked carapace spec to ~/.config/carapace/specs/xng.yaml"
-
-  echo "Restart your shell or run: source <(carapace _carapace)"
+  echo "installed xng to ~/.local/bin/xng"
+  echo ""
+  echo "for completions (optional), install carapace-spec then add to your rc:"
+  echo "  bash/zsh: source <(carapace-spec '$script_dir/searxng.yaml')"
+  echo "  fish:     carapace-spec '$script_dir/searxng.yaml' | source"
 }
 
 # Extract enabled engines from settings.yml
