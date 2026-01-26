@@ -51,9 +51,14 @@ searxng_complete_engines() {
   echo "$engines"
 }
 
+# Get shortcuts from API
+searxng_complete_shortcuts() {
+  curl -s "${SEARXNG_URL}/config" | jq -r '.engines[] | select(.enabled==true) | .shortcut' | sort -u
+}
+
 # Query function (called by ~/.local/bin/xng wrapper)
 _xng() {
-  local output="" engines=() categories=() page="" lang=""
+  local output="" bangs=() page="" lang=""
   local query=""
 
   while [[ $# -gt 0 ]]; do
@@ -63,11 +68,15 @@ _xng() {
       shift 2
       ;;
     -e | --engine)
-      engines+=("!$2")
+      bangs+=("!$2")
+      shift 2
+      ;;
+    -s | --shortcut)
+      bangs+=("!$2")
       shift 2
       ;;
     -c | --category)
-      categories+=("!$2")
+      bangs+=("!$2")
       shift 2
       ;;
     -p | --page)
@@ -87,8 +96,8 @@ _xng() {
 
   query="${query## }" # trim leading space
 
-  # Build query with !engine !category :lang prefixes
-  local prefixes="${engines[*]} ${categories[*]} ${lang}"
+  # Build query with !bangs :lang prefixes
+  local prefixes="${bangs[*]} ${lang}"
   prefixes="${prefixes## }"
   prefixes="${prefixes%% }"
   [[ -n "$prefixes" ]] && query="$prefixes $query"
