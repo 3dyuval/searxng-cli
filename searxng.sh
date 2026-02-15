@@ -4,19 +4,19 @@
 SEARXNG_CONFIG="${SEARXNG_CONFIG:-/etc/searxng/settings.yml}"
 SEARXNG_URL="${SEARXNG_URL:-http://localhost:8855}"
 
-# Install xng wrapper
+# Install searxng wrapper
 searxng_install() {
   local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
   # Create wrapper script
   mkdir -p ~/.local/bin
-  cat >~/.local/bin/xng <<WRAPPER
+  cat >~/.local/bin/searxng <<WRAPPER
 #!/bin/bash
 source "$script_dir/searxng.sh"
-_xng "\$@"
+_searxng "\$@"
 WRAPPER
-  chmod +x ~/.local/bin/xng
-  echo "installed xng to ~/.local/bin/xng"
+  chmod +x ~/.local/bin/searxng
+  echo "installed searxng to ~/.local/bin/searxng"
   echo ""
   echo "for completions (optional), install carapace-spec then add to your rc:"
   echo "  bash/zsh: source <(carapace-spec '$script_dir/searxng.yaml')"
@@ -56,8 +56,8 @@ searxng_complete_shortcuts() {
   curl -s "${SEARXNG_URL}/config" | jq -r '.engines[] | select(.enabled==true) | .shortcut' | sort -u
 }
 
-# Query function (called by ~/.local/bin/xng wrapper)
-_xng() {
+# Query function (called by /usr/bin/searxng wrapper)
+_searxng() {
   local output="" bangs=() page="" lang=""
   local query=""
 

@@ -1,4 +1,4 @@
-name: xng
+name: searxng
 description: SearXNG search (opens browser, -o for CLI output)
 flags:
   -o, --output=: output format (url prints URL, others fetch via curl)
@@ -11,7 +11,7 @@ flags:
 completion:
   flag:
     output: ["url", "json", "html", "csv", "rss"]
-    engine: ["$(source ~/proj/searxng.sh/searxng.sh && searxng_complete_engines)"]
-    shortcut: ["$(source ~/proj/searxng.sh/searxng.sh && searxng_complete_shortcuts)"]
+    engine: ["$(source /usr/share/searxng-cli/searxng.sh && searxng_complete_engines)"]
+    shortcut: ["$(source /usr/share/searxng-cli/searxng.sh && searxng_complete_shortcuts)"]
     category: ["general", "images", "videos", "news", "music", "files", "it", "science", "social media"]
     lang: ["en", "de", "fr", "es", "it", "pt", "nl", "ru", "zh", "ja", "ko", "ar", "he"]
