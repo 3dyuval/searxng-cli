@@ -1,13 +1,13 @@
 # Maintainer: Yuval.D <yuvddd@pm.me>
 pkgname=searxng-cli
-pkgver=r11.c2bc8ed
+pkgver=r12.34cef93
 pkgrel=1
 pkgdesc="Shell wrapper for SearXNG with carapace completions"
 arch=('any')
 url="https://github.com/3dyuval/searxng-cli"
 license=('MIT')
 depends=('curl' 'jq' 'xdg-utils')
-optdepends=('carapace-spec: shell completions')
+optdepends=('carapace: shell completions')
 source=("git+https://github.com/3dyuval/searxng-cli.git")
 sha256sums=('SKIP')
 

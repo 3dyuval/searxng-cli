@@ -53,14 +53,41 @@ _searxng() {
       local yaml="${SEARXNG_DATADIR}/searxng.yaml"
       [[ -f "$yaml" ]] || yaml="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/searxng.yaml"
       awk '
-        /^description:/ { desc = substr($0, index($0,$2)); print desc; print "" }
-        /^(flags|env):/ { section=1; print $0; next }
-        section && /^[^ ]/ { section=0; print "" }
-        section && /^  / { print }
+        /^description:/ { desc = substr($0, index($0,$2)) }
+        /^flags:/ { flags=1; next }
+        flags && /^[^ ]/ { flags=0 }
+        flags && /^  / {
+          gsub(/^  /, "")
+          split($0, a, ":")
+          flag = a[1]
+          # extract short flag for usage line
+          split(flag, f, ",")
+          short = f[1]; gsub(/^ +| +$/, "", short)
+          gsub(/=/, "", short)
+          usage = usage " [" short "]"
+        }
+        /^env:/ { env=1; next }
+        env && /^[^ ]/ { env=0 }
+        env && /^  / { envlines = envlines $0 "\n" }
+        END {
+          print "usage: searxng" usage " QUERY...\n"
+          print desc "\n"
+          print "positional arguments:"
+          print "  QUERY                 the search query\n"
+        }
+      ' "$yaml"
+      echo "options:"
+      awk '
+        /^flags:/ { flags=1; next }
+        flags && /^[^ ]/ { flags=0 }
+        flags && /^  / { gsub(/^  /, "  "); print }
       ' "$yaml"
       echo ""
-      echo "Completions (requires carapace-spec):"
-      echo "  source <(carapace-spec $yaml)"
+      echo "environment:"
+      echo "  SEARXNG_URL: ${SEARXNG_URL}"
+      echo ""
+      echo "completions (requires carapace):"
+      echo "  ln -s $yaml ~/.config/carapace/specs/searxng.yaml"
       return 0
       ;;
     -o | --output)
