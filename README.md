@@ -1,61 +1,53 @@
-# SearXNG shell with autocomplete
+<h1 align="center">searxng-cli</h1>
 
-## Requirements
+<p align="center">
+  <strong>Search the web from your terminal.</strong>
+  <br/>
+  <i>Shell wrapper for <a href="https://github.com/searxng/searxng">SearXNG</a> with <a href="https://github.com/carapace-sh/carapace-spec">carapace</a> completions</i>
+</p>
 
-- SearXNG instance
-- `curl`, `jq`
-- `xdg-open` (Linux) or `open` (macOS)
-- [`carapace-spec`](https://github.com/carapace-sh/carapace-spec) (optional, for completions)
-
-## Installation
-
-```bash
-source searxng.sh && searxng_install
-```
+<hr />
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SEARXNG_URL` | `http://localhost:8855` | SearXNG instance URL |
-| `SEARXNG_CONFIG` | `/etc/searxng/settings.yml` | fallback for engine completions |
+<table>
+<tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>SEARXNG_URL</code></td><td><code>http://localhost:8855</code></td><td>SearXNG instance URL</td></tr>
+<tr><td colspan="3"><ul>
+<li><a href="https://docs.searxng.org/admin/installation.html">SearXNG Installation</a></li>
+<li><a href="https://docs.searxng.org/dev/search_api.html">SearXNG Search API</a></li>
+<li><a href="https://searx.space">Public Instances</a></li>
+</ul></td></tr>
+<tr><td><code>SEARXNG_CONFIG</code></td><td><code>/etc/searxng/settings.yml</code></td><td>Fallback for engine completions</td></tr>
+<tr><td colspan="3"><ul>
+<li><a href="https://docs.searxng.org/admin/settings/index.html">Settings Reference</a></li>
+<li><a href="https://docs.searxng.org/admin/engines.html">Engine Configuration</a></li>
+</ul></td></tr>
+</table>
 
-## Usage
-
-```bash
-xng paris                       # opens browser
-xng -o json paris               # returns JSON
-xng -o url paris                # prints URL without fetching
-```
-
-### Engines and shortcuts
-
-```bash
-xng -e google paris             # engine by name
-xng -s g paris                  # engine by shortcut
-xng -s g -s images paris        # multiple
-```
-
-`-e` completes engine names, `-s` completes shortcuts.
-
-### Categories and language
+## Install
 
 ```bash
-xng -c images paris             # category
-xng -l fr paris                 # language
-xng -s g -c images -l fr paris  # combined
+# Arch (AUR)
+makepkg -si
 ```
 
-### Pagination
+## Examples
 
 ```bash
-xng -p 2 paris                  # page 2
+searxng paris                          # open in browser
+searxng -o json paris                  # JSON output
+searxng -o url paris                   # print URL only
+searxng -e google paris                # engine by name
+searxng -s g paris                     # engine by shortcut
+searxng -s g -s images paris           # multiple engines
+searxng -c images paris                # category
+searxng -l fr paris                    # language
+searxng -s g -c images -l fr paris     # combined
+searxng -p 2 paris                     # page 2
+searxng -s rsub 'linux/neovim'         # custom engine: subreddit search
 ```
 
-## Custom engines
+## License
 
-See `../searxng/engines/` for custom SearXNG engines like `reddit_subreddit.py` which searches within a subreddit:
-
-```bash
-xng -s rsub 'linux/neovim'      # search r/linux for "neovim"
-```
+MIT

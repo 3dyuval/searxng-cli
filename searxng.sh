@@ -4,25 +4,6 @@
 SEARXNG_CONFIG="${SEARXNG_CONFIG:-/etc/searxng/settings.yml}"
 SEARXNG_URL="${SEARXNG_URL:-http://localhost:8855}"
 
-# Install searxng wrapper
-searxng_install() {
-  local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-  # Create wrapper script
-  mkdir -p ~/.local/bin
-  cat >~/.local/bin/searxng <<WRAPPER
-#!/bin/bash
-source "$script_dir/searxng.sh"
-_searxng "\$@"
-WRAPPER
-  chmod +x ~/.local/bin/searxng
-  echo "installed searxng to ~/.local/bin/searxng"
-  echo ""
-  echo "for completions (optional), install carapace-spec then add to your rc:"
-  echo "  bash/zsh: source <(carapace-spec '$script_dir/searxng.yaml')"
-  echo "  fish:     carapace-spec '$script_dir/searxng.yaml' | source"
-}
-
 # Extract enabled engines from settings.yml
 searxng_engines() {
   awk '
@@ -63,6 +44,25 @@ _searxng() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    -v | --version)
+      echo "searxng-cli ${SEARXNG_CLI_VERSION:-dev}"
+      return 0
+      ;;
+    -h | --help)
+      local yaml="/usr/share/searxng-cli/searxng.yaml"
+      [[ -f "$yaml" ]] || yaml="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/searxng.yaml"
+      awk '
+        /^description:/ { desc = substr($0, index($0,$2)); print desc; print "" }
+        /^flags:/ { flags=1; next }
+        flags && /^[^ ]/ { flags=0 }
+        flags && /^  / { gsub(/^  /, "  "); print }
+      ' "$yaml"
+      echo "  -h, --help: show this help"
+      echo ""
+      echo "Completions (requires carapace-spec):"
+      echo "  source <(carapace-spec $yaml)"
+      return 0
+      ;;
     -o | --output)
       output="$2"
       shift 2

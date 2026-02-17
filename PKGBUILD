@@ -1,6 +1,6 @@
 # Maintainer: Yuval.D <yuvddd@pm.me>
 pkgname=searxng-cli
-pkgver=r9.c81b742
+pkgver=r9.f3baef3
 pkgrel=1
 pkgdesc="Shell wrapper for SearXNG with carapace completions"
 arch=('any')
@@ -29,10 +29,11 @@ package() {
 
   # Install wrapper script
   install -dm755 "$pkgdir/usr/bin"
-  cat > "$pkgdir/usr/bin/searxng" <<'EOF'
+  cat > "$pkgdir/usr/bin/searxng" <<EOF
 #!/bin/bash
+SEARXNG_CLI_VERSION="$pkgver"
 source /usr/share/searxng-cli/searxng.sh
-_searxng "$@"
+_searxng "\$@"
 EOF
   chmod 755 "$pkgdir/usr/bin/searxng"
 }
