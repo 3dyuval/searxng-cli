@@ -7,6 +7,8 @@ flags:
   -c, --category=: search category
   -l, --lang=: language filter
   -p, --page=: page number
+  -v, --version: print version
+  -h, --help: show help
 
 completion:
   flag:

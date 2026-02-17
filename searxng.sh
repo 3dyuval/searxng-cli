@@ -57,7 +57,6 @@ _searxng() {
         flags && /^[^ ]/ { flags=0 }
         flags && /^  / { gsub(/^  /, "  "); print }
       ' "$yaml"
-      echo "  -h, --help: show this help"
       echo ""
       echo "Completions (requires carapace-spec):"
       echo "  source <(carapace-spec $yaml)"
