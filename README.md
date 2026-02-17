@@ -23,6 +23,10 @@
 <li><a href="https://docs.searxng.org/admin/settings/index.html">Settings Reference</a></li>
 <li><a href="https://docs.searxng.org/admin/engines.html">Engine Configuration</a></li>
 </ul></td></tr>
+<tr><td><code>SEARXNG_DATADIR</code></td><td><code>/usr/share/searxng-cli</code></td><td>Data directory (yaml spec, script)</td></tr>
+<tr><td colspan="3"><ul>
+<li><a href="https://github.com/carapace-sh/carapace-spec">carapace-spec</a></li>
+</ul></td></tr>
 </table>
 
 ## Install

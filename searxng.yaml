@@ -10,6 +10,11 @@ flags:
   -v, --version: print version
   -h, --help: show help
 
+env:
+  SEARXNG_URL: SearXNG instance URL (default http://localhost:8855)
+  SEARXNG_CONFIG: settings.yml path (default /etc/searxng/settings.yml)
+  SEARXNG_DATADIR: data directory (default /usr/share/searxng-cli)
+
 completion:
   flag:
     output: ["url", "json", "html", "csv", "rss"]

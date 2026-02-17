@@ -3,6 +3,7 @@
 
 SEARXNG_CONFIG="${SEARXNG_CONFIG:-/etc/searxng/settings.yml}"
 SEARXNG_URL="${SEARXNG_URL:-http://localhost:8855}"
+SEARXNG_DATADIR="${SEARXNG_DATADIR:-/usr/share/searxng-cli}"
 
 # Extract enabled engines from settings.yml
 searxng_engines() {
@@ -49,13 +50,13 @@ _searxng() {
       return 0
       ;;
     -h | --help)
-      local yaml="/usr/share/searxng-cli/searxng.yaml"
+      local yaml="${SEARXNG_DATADIR}/searxng.yaml"
       [[ -f "$yaml" ]] || yaml="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/searxng.yaml"
       awk '
         /^description:/ { desc = substr($0, index($0,$2)); print desc; print "" }
-        /^flags:/ { flags=1; next }
-        flags && /^[^ ]/ { flags=0 }
-        flags && /^  / { gsub(/^  /, "  "); print }
+        /^(flags|env):/ { section=1; print $0; next }
+        section && /^[^ ]/ { section=0; print "" }
+        section && /^  / { print }
       ' "$yaml"
       echo ""
       echo "Completions (requires carapace-spec):"
