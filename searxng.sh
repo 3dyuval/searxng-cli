@@ -53,7 +53,7 @@ searxng_complete_flag() {
 
 # Query function (called by /usr/bin/searxng wrapper)
 _searxng() {
-  local output="" bangs=() page="" lang="" list_flag=""
+  local output="" bangs=() page="" lang="" list_flag="" list_json=""
   local query=""
 
   while [[ $# -gt 0 ]]; do
@@ -96,16 +96,27 @@ _searxng() {
         flags && /^  / { gsub(/^  /, "  "); print }
       ' "$yaml"
       echo ""
-      echo "environment:"
+      echo "listing:"
+      echo "  searxng -e              list engines"
+      echo "  searxng -s              list shortcuts"
+      echo "  searxng -c              list categories"
+      echo "  searxng -l              list languages"
+      echo "  searxng -o              list output formats"
+      echo "  searxng -e -j            list engines as JSON"
+      echo ""
+      echo "env:"
       echo "  SEARXNG_URL: ${SEARXNG_URL}"
       echo ""
       echo "completions (requires carapace):"
       echo "  ln -s $yaml ~/.config/carapace/specs/searxng.yaml"
       return 0
       ;;
+    -j | --json)
+      list_json=1
+      shift
+      ;;
     -o | --output)
-      list_flag="output"
-      if [[ -n "$2" && "$2" != -* ]]; then output="$2"; shift 2; else shift; fi
+      if [[ -n "$2" && "$2" != -* ]]; then output="$2"; shift 2; else list_flag="output"; shift; fi
       ;;
     -e | --engine)
       list_flag="engine"
@@ -137,11 +148,17 @@ _searxng() {
 
   # If no query and a flag was used, list available values
   if [[ -z "$query" && -n "$list_flag" ]]; then
+    local values
     case "$list_flag" in
-      engine)   searxng_complete_engines ;;
-      shortcut) searxng_complete_shortcuts ;;
-      *)        searxng_complete_flag "$list_flag" ;;
+      engine)   values=$(searxng_complete_engines) ;;
+      shortcut) values=$(searxng_complete_shortcuts) ;;
+      *)        values=$(searxng_complete_flag "$list_flag") ;;
     esac
+    if [[ -n "$list_json" ]]; then
+      echo "$values" | jq -R . | jq -s .
+    else
+      echo "$values"
+    fi
     return 0
   fi
 

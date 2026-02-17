@@ -1,6 +1,6 @@
 # Maintainer: Yuval.D <yuvddd@pm.me>
 pkgname=searxng-cli
-pkgver=r12.34cef93
+pkgver=r15.2a72b19
 pkgrel=1
 pkgdesc="Shell wrapper for SearXNG with carapace completions"
 arch=('any')

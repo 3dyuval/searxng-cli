@@ -1,14 +1,15 @@
 name: searxng
 description: SearXNG search (opens browser, -o for CLI output)
 flags:
+  -j, --json: JSON output
   -o, --output=: output format (url prints URL, others fetch via curl)
   -e, --engine=: search engine (by name)
   -s, --shortcut=: search engine (by shortcut)
   -c, --category=: search category
   -l, --lang=: language filter
   -p, --page=: page number
-  -v, --version: print version
   -h, --help: show help
+  -v, --version: print version
 
 env:
   SEARXNG_URL: SearXNG instance URL

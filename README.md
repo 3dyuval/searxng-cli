@@ -52,6 +52,19 @@ searxng -p 2 paris                     # page 2
 searxng -s rsub 'linux/neovim'         # custom engine: subreddit search
 ```
 
+## Listing Mode
+
+Omit the query to list available values for a flag.
+
+```bash
+searxng -e                             # list engines
+searxng -s                             # list shortcuts
+searxng -c                             # list categories
+searxng -l                             # list languages
+searxng -o                             # list output formats
+searxng -e -o json                     # list engines as JSON
+```
+
 ## License
 
 MIT
