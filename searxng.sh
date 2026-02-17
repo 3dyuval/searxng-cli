@@ -38,9 +38,22 @@ searxng_complete_shortcuts() {
   curl -s "${SEARXNG_URL}/config" | jq -r '.engines[] | select(.enabled==true) | .shortcut' | sort -u
 }
 
+# List values for a flag from searxng.yaml completion data
+searxng_complete_flag() {
+  local flag="$1"
+  local yaml="${SEARXNG_DATADIR}/searxng.yaml"
+  [[ -f "$yaml" ]] || yaml="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/searxng.yaml"
+  awk -v f="$flag" '
+    /^    / && index($0, f ":") {
+      gsub(/.*\[/, ""); gsub(/\].*/, ""); gsub(/"/, ""); gsub(/, /, "\n")
+      print
+    }
+  ' "$yaml"
+}
+
 # Query function (called by /usr/bin/searxng wrapper)
 _searxng() {
-  local output="" bangs=() page="" lang=""
+  local output="" bangs=() page="" lang="" list_flag=""
   local query=""
 
   while [[ $# -gt 0 ]]; do
@@ -91,28 +104,27 @@ _searxng() {
       return 0
       ;;
     -o | --output)
-      output="$2"
-      shift 2
+      list_flag="output"
+      if [[ -n "$2" && "$2" != -* ]]; then output="$2"; shift 2; else shift; fi
       ;;
     -e | --engine)
-      bangs+=("!$2")
-      shift 2
+      list_flag="engine"
+      if [[ -n "$2" && "$2" != -* ]]; then bangs+=("!$2"); shift 2; else shift; fi
       ;;
     -s | --shortcut)
-      bangs+=("!$2")
-      shift 2
+      list_flag="shortcut"
+      if [[ -n "$2" && "$2" != -* ]]; then bangs+=("!$2"); shift 2; else shift; fi
       ;;
     -c | --category)
-      bangs+=("!$2")
-      shift 2
+      list_flag="category"
+      if [[ -n "$2" && "$2" != -* ]]; then bangs+=("!$2"); shift 2; else shift; fi
       ;;
     -p | --page)
-      page="$2"
-      shift 2
+      if [[ -n "$2" && "$2" != -* ]]; then page="$2"; shift 2; else shift; fi
       ;;
     -l | --lang)
-      lang=":$2"
-      shift 2
+      list_flag="lang"
+      if [[ -n "$2" && "$2" != -* ]]; then lang=":$2"; shift 2; else shift; fi
       ;;
     *)
       query="$query $1"
@@ -122,6 +134,16 @@ _searxng() {
   done
 
   query="${query## }" # trim leading space
+
+  # If no query and a flag was used, list available values
+  if [[ -z "$query" && -n "$list_flag" ]]; then
+    case "$list_flag" in
+      engine)   searxng_complete_engines ;;
+      shortcut) searxng_complete_shortcuts ;;
+      *)        searxng_complete_flag "$list_flag" ;;
+    esac
+    return 0
+  fi
 
   # Build query with !bangs :lang prefixes
   local prefixes="${bangs[*]} ${lang}"
