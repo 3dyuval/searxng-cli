@@ -1,26 +1,20 @@
 Output assets/01-intro.gif
 
 Set Shell "bash"
-Set FontSize 14
-Set Width 1200
-Set Height 600
-Set LineHeight 1.2
+Set FontSize 18
+Set Width 800
+Set Height 450
 Set Padding 20
 Set Theme "Catppuccin Mocha"
-Set TypingSpeed 40ms
-Set CursorBlink false
 
-# Show help
-Type "searxng -h"
+Type "# Search the web from your terminal"
 Enter
-Sleep 3s
+Sleep 1s
 
-# Show version
-Type "searxng -v"
+Type "searxng -o url 'what is searxng'"
 Enter
-Sleep 1.5s
+Sleep 5s
 
-# URL output (no network needed)
-Type "searxng -o url 'arch linux wayland'"
+Type "searxng -o json 'what is searxng' | jq '[.results[:5][] | {title: .title[:50], url: .url[:60]}]'"
 Enter
-Sleep 2s
+Sleep 8s

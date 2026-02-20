@@ -8,3 +8,4 @@ src/searxng-cli/
 *.tar.gz
 searxng.yaml.tmp
 assets/*.mp4
+.cache/

@@ -2,25 +2,35 @@ Output assets/02-search.gif
 
 Set Shell "bash"
 Set FontSize 14
-Set Width 1200
+Set Width 900
 Set Height 600
-Set LineHeight 1.2
 Set Padding 20
 Set Theme "Catppuccin Mocha"
-Set TypingSpeed 40ms
-Set CursorBlink false
 
-# JSON search results
-Type "searxng -o json 'neovim plugins' | head -30"
+Type "# Output formats"
+Enter
+Sleep 500ms
+
+Type "searxng -o url 'neovim plugins'"
 Enter
 Sleep 3s
 
-# Engine-specific search as URL
+Type "searxng -o json 'neovim plugins' | jq '.results[:2]'"
+Enter
+Sleep 4s
+
+Type "# Engine + output"
+Enter
+Sleep 500ms
+
 Type "searxng -e wikipedia -o url 'type theory'"
 Enter
-Sleep 2s
+Sleep 3s
 
-# Combined filters
+Type "# Combined filters"
+Enter
+Sleep 500ms
+
 Type "searxng -c images -l fr -o url 'paris'"
 Enter
-Sleep 2s
+Sleep 3s

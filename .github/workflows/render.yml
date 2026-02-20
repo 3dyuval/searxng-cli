@@ -9,18 +9,18 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
-    services:
-      searxng:
-        image: searxng/searxng
-        ports:
-          - 8855:8080
     env:
       SEARXNG_URL: http://localhost:8855
     steps:
       - uses: actions/checkout@v4
 
-      - name: Wait for SearXNG
+      - name: Start SearXNG
         run: |
+          docker rm -f searxng 2>/dev/null || true
+          docker run -d --name searxng \
+            -p 8855:8080 \
+            -v ${{ github.workspace }}/tapes/settings.yml:/etc/searxng/settings.yml \
+            searxng/searxng
           for i in $(seq 1 30); do
             curl -sf http://localhost:8855 >/dev/null && break
             sleep 2
@@ -28,16 +28,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y jq xdg-utils ffmpeg ttyd
-          go install github.com/charmbracelet/vhs@latest
+          sudo apt-get update && sudo apt-get install -y jq xdg-utils ffmpeg ttyd \
+            libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
+            libxcomposite1 libxdamage1 libxrandr2 libgbm1 libpango-1.0-0 libasound2t64
+          VHS_VERSION=$(curl -s https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r .tag_name)
+          curl -fsSL "https://github.com/charmbracelet/vhs/releases/download/${VHS_VERSION}/vhs_${VHS_VERSION#v}_Linux_x86_64.tar.gz" \
+            | sudo tar xz -C /usr/local/bin --strip-components=1 --wildcards '*/vhs'
 
       - name: Install searxng-cli
         run: sudo make install PREFIX=/usr VERSION=ci
 
       - name: Render tapes
-        run: |
-          export PATH="$HOME/go/bin:$PATH"
-          make render
+        run: make render
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
