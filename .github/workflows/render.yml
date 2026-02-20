@@ -9,32 +9,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install searxng-cli and dependencies
+      - name: Install dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y jq xdg-utils
-          sudo make install PREFIX=/usr VERSION=ci
+          sudo apt-get update && sudo apt-get install -y jq xdg-utils ffmpeg ttyd
+          go install github.com/charmbracelet/vhs@latest
 
-      - uses: charmbracelet/vhs-action@v2
-        with:
-          path: tapes/01-intro.tape
+      - name: Install searxng-cli
+        run: sudo make install PREFIX=/usr VERSION=ci
 
-      - uses: charmbracelet/vhs-action@v2
-        with:
-          path: tapes/02-output-modes.tape
-
-      - uses: charmbracelet/vhs-action@v2
-        with:
-          path: tapes/03-filtering.tape
-
-      - uses: charmbracelet/vhs-action@v2
-        with:
-          path: tapes/04-scripting.tape
-
-      - uses: charmbracelet/vhs-action@v2
-        with:
-          path: tapes/05-setup.tape
-
-      - run: git diff --exit-code assets/ || echo "assets out of sync with tapes"
+      - name: Render tapes
+        run: |
+          export PATH="$HOME/go/bin:$PATH"
+          make render
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:

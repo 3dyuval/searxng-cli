@@ -7,5 +7,4 @@ src/searxng-cli/
 *.rpm
 *.tar.gz
 searxng.yaml.tmp
-assets/*.gif
 assets/*.mp4
