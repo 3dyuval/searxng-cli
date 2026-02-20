@@ -8,6 +8,10 @@
 
 <hr />
 
+<p align="center">
+  <img src="assets/01-intro.gif" alt="Basic usage" width="700" />
+</p>
+
 ## Install
 
 ### Manual (any Linux / macOS)
@@ -86,18 +90,37 @@ sudo make uninstall
 
 ## Examples
 
+### Output Modes
+
+<img src="assets/02-output-modes.gif" alt="Output modes" width="700" />
+
 ```bash
 searxng paris                          # open in browser
 searxng -o json paris                  # JSON output
 searxng -o url paris                   # print URL only
+```
+
+### Filtering
+
+<img src="assets/03-filtering.gif" alt="Filtering by engine, category, language" width="700" />
+
+```bash
 searxng -e google paris                # engine by name
 searxng -s g paris                     # engine by shortcut
-searxng -s g -s images paris           # multiple engines
 searxng -c images paris                # category
 searxng -l fr paris                    # language
 searxng -s g -c images -l fr paris     # combined
 searxng -p 2 paris                     # page 2
-searxng -s rsub 'linux/neovim'         # custom engine: subreddit search
+```
+
+### Scripting
+
+<img src="assets/04-scripting.gif" alt="Piping and scripting" width="700" />
+
+```bash
+searxng -j 'rust crates' | jq '.[0]'  # pipe JSON to jq
+searxng -o url 'query' | fzf           # pick URL with fzf
+searxng -e -j | jq '.[:3]'            # engine list as JSON
 ```
 
 ## Listing Mode
@@ -111,6 +134,16 @@ searxng -c                             # list categories
 searxng -l                             # list languages
 searxng -o                             # list output formats
 searxng -e -j                          # list engines as JSON
+```
+
+## Setup
+
+<img src="assets/05-setup.gif" alt="Version, env, completions" width="700" />
+
+```bash
+searxng -v                             # show version
+export SEARXNG_URL=http://localhost:8855
+ln -s /usr/share/searxng-cli/searxng.yaml ~/.config/carapace/specs/searxng.yaml
 ```
 
 ## License

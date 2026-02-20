@@ -1,0 +1,42 @@
+name: Render VHS tapes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install searxng-cli and dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq xdg-utils
+          sudo make install PREFIX=/usr VERSION=ci
+
+      - uses: charmbracelet/vhs-action@v2
+        with:
+          path: tapes/01-intro.tape
+
+      - uses: charmbracelet/vhs-action@v2
+        with:
+          path: tapes/02-output-modes.tape
+
+      - uses: charmbracelet/vhs-action@v2
+        with:
+          path: tapes/03-filtering.tape
+
+      - uses: charmbracelet/vhs-action@v2
+        with:
+          path: tapes/04-scripting.tape
+
+      - uses: charmbracelet/vhs-action@v2
+        with:
+          path: tapes/05-setup.tape
+
+      - run: git diff --exit-code assets/ || echo "assets out of sync with tapes"
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: re-render VHS assets"
+          file_pattern: assets/*.gif
