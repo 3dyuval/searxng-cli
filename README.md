@@ -90,55 +90,36 @@ sudo make uninstall
 
 ## Examples
 
-### Output Modes
+### Search
 
-<img src="assets/02-output-modes.gif" alt="Output modes" width="700" />
-
-```bash
-searxng paris                          # open in browser
-searxng -o json paris                  # JSON output
-searxng -o url paris                   # print URL only
-```
-
-### Filtering
-
-<img src="assets/03-filtering.gif" alt="Filtering by engine, category, language" width="700" />
+<img src="assets/02-search.gif" alt="Search with JSON output and filters" width="700" />
 
 ```bash
-searxng -e google paris                # engine by name
-searxng -s g paris                     # engine by shortcut
-searxng -c images paris                # category
-searxng -l fr paris                    # language
-searxng -s g -c images -l fr paris     # combined
-searxng -p 2 paris                     # page 2
+searxng 'arch linux wayland'           # open in browser
+searxng -o json 'neovim plugins'       # JSON output
+searxng -o url 'neovim plugins'        # print URL only
+searxng -e wikipedia -o url 'type theory'  # engine + URL
+searxng -c images -l fr -o url 'paris' # combined filters
 ```
 
-### Scripting
+### Listing
 
-<img src="assets/04-scripting.gif" alt="Piping and scripting" width="700" />
-
-```bash
-searxng -j 'rust crates' | jq '.[0]'  # pipe JSON to jq
-searxng -o url 'query' | fzf           # pick URL with fzf
-searxng -e -j | jq '.[:3]'            # engine list as JSON
-```
-
-## Listing Mode
+<img src="assets/03-listing.gif" alt="Listing engines, categories, formats" width="700" />
 
 Omit the query to list available values for a flag.
 
 ```bash
 searxng -e                             # list engines
+searxng -e -j | jq '.[:3]'            # engines as JSON
 searxng -s                             # list shortcuts
 searxng -c                             # list categories
 searxng -l                             # list languages
 searxng -o                             # list output formats
-searxng -e -j                          # list engines as JSON
 ```
 
-## Setup
+### Setup
 
-<img src="assets/05-setup.gif" alt="Version, env, completions" width="700" />
+<img src="assets/04-setup.gif" alt="Version, env, completions" width="700" />
 
 ```bash
 searxng -v                             # show version

@@ -1,4 +1,4 @@
-Output assets/02-output-modes.gif
+Output assets/03-listing.gif
 
 Set Shell "bash"
 Set FontSize 14
@@ -10,15 +10,20 @@ Set Theme "Catppuccin Mocha"
 Set TypingSpeed 40ms
 Set CursorBlink false
 
-# URL-only output
-Type "searxng -o url 'neovim plugins'"
+# List engines
+Type "searxng -e | head -10"
 Enter
 Sleep 2s
 
-# JSON output
-Type "searxng -j 'neovim plugins' | head -20"
+# Engines as JSON
+Type "searxng -e -j | jq '.[:3]'"
 Enter
-Sleep 2.5s
+Sleep 2s
+
+# List categories
+Type "searxng -c"
+Enter
+Sleep 1.5s
 
 # List output formats
 Type "searxng -o"

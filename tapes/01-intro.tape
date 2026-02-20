@@ -13,9 +13,14 @@ Set CursorBlink false
 # Show help
 Type "searxng -h"
 Enter
-Sleep 2s
-
-# Basic search
-Type "searxng 'arch linux wayland'"
-Enter
 Sleep 3s
+
+# Show version
+Type "searxng -v"
+Enter
+Sleep 1.5s
+
+# URL output (no network needed)
+Type "searxng -o url 'arch linux wayland'"
+Enter
+Sleep 2s

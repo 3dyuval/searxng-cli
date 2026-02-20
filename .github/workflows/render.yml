@@ -9,8 +9,22 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
+    services:
+      searxng:
+        image: searxng/searxng
+        ports:
+          - 8855:8080
+    env:
+      SEARXNG_URL: http://localhost:8855
     steps:
       - uses: actions/checkout@v4
+
+      - name: Wait for SearXNG
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8855 >/dev/null && break
+            sleep 2
+          done
 
       - name: Install dependencies
         run: |

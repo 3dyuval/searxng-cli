@@ -1,4 +1,4 @@
-Output assets/05-setup.gif
+Output assets/04-setup.gif
 
 Set Shell "bash"
 Set FontSize 14
@@ -13,7 +13,7 @@ Set CursorBlink false
 # Show version
 Type "searxng -v"
 Enter
-Sleep 1s
+Sleep 1.5s
 
 # Set custom instance
 Type "export SEARXNG_URL=http://localhost:8855"
@@ -25,8 +25,7 @@ Type "ln -s /usr/share/searxng-cli/searxng.yaml ~/.config/carapace/specs/searxng
 Enter
 Sleep 1.5s
 
-# Show tab completion working
-Type "searxng -"
-Sleep 500ms
-Type@0ms ""
-Sleep 1.5s
+# List languages
+Type "searxng -l"
+Enter
+Sleep 2s
