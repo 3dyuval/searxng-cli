@@ -1,0 +1,23 @@
+# Maintainer: Yuval.D <yuvddd@pm.me>
+pkgname=searxng-cli
+pkgver=r15.f81a56e
+pkgrel=1
+pkgdesc="Shell wrapper for SearXNG with carapace completions"
+arch=('any')
+url="https://github.com/3dyuval/searxng-cli"
+license=('MIT')
+depends=('curl' 'jq' 'xdg-utils')
+optdepends=('carapace: shell completions')
+makedepends=('make')
+source=("git+https://github.com/3dyuval/searxng-cli.git")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/searxng-cli"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+  cd "$srcdir/searxng-cli"
+  make install DESTDIR="$pkgdir" PREFIX=/usr VERSION="$pkgver"
+}

@@ -3,7 +3,13 @@
 
 SEARXNG_CONFIG="${SEARXNG_CONFIG:-/etc/searxng/settings.yml}"
 SEARXNG_URL="${SEARXNG_URL:-http://localhost:8855}"
-SEARXNG_DATADIR="${SEARXNG_DATADIR:-/usr/share/searxng-cli}"
+if [[ -z "$SEARXNG_DATADIR" ]]; then
+  if [[ -d /usr/local/share/searxng-cli ]]; then
+    SEARXNG_DATADIR=/usr/local/share/searxng-cli
+  else
+    SEARXNG_DATADIR=/usr/share/searxng-cli
+  fi
+fi
 
 # Extract enabled engines from settings.yml
 searxng_engines() {

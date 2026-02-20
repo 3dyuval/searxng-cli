@@ -1,0 +1,16 @@
+Source: searxng-cli
+Section: utils
+Priority: optional
+Maintainer: Yuval.D <yuvddd@pm.me>
+Build-Depends: debhelper-compat (= 13), make
+Standards-Version: 4.6.2
+Homepage: https://github.com/3dyuval/searxng-cli
+
+Package: searxng-cli
+Architecture: all
+Depends: ${misc:Depends}, curl, jq, xdg-utils
+Recommends: carapace
+Description: Shell wrapper for SearXNG with carapace completions
+ Search the web from your terminal using a SearXNG instance.
+ Supports multiple output formats, engine/category filtering,
+ and shell completions via carapace.

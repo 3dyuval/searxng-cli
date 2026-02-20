@@ -8,6 +8,61 @@
 
 <hr />
 
+## Install
+
+### Manual (any Linux / macOS)
+
+```bash
+git clone https://github.com/3dyuval/searxng-cli.git
+cd searxng-cli
+sudo make install
+```
+
+To customize the prefix:
+
+```bash
+make install PREFIX=/usr/local DESTDIR=/tmp/staging
+```
+
+### Arch Linux (AUR)
+
+```bash
+cd packaging
+makepkg -si
+```
+
+### Debian / Ubuntu
+
+```bash
+cd packaging
+dpkg-buildpackage -us -uc
+sudo dpkg -i ../searxng-cli_*.deb
+```
+
+### Fedora / RHEL
+
+```bash
+rpmbuild -ba packaging/searxng-cli.spec
+```
+
+### Homebrew
+
+```bash
+brew install --formula packaging/homebrew/searxng-cli.rb
+```
+
+### Nix
+
+```bash
+nix-build packaging/nix/default.nix
+```
+
+### Uninstall
+
+```bash
+sudo make uninstall
+```
+
 ## Environment Variables
 
 <table>
@@ -28,13 +83,6 @@
 <li><a href="https://github.com/carapace-sh/carapace-spec">carapace-spec</a></li>
 </ul></td></tr>
 </table>
-
-## Install
-
-```bash
-# Arch (AUR)
-makepkg -si
-```
 
 ## Examples
 
@@ -62,7 +110,7 @@ searxng -s                             # list shortcuts
 searxng -c                             # list categories
 searxng -l                             # list languages
 searxng -o                             # list output formats
-searxng -e -o json                     # list engines as JSON
+searxng -e -j                          # list engines as JSON
 ```
 
 ## License

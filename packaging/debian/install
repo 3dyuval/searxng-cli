@@ -1,0 +1,4 @@
+usr/bin/searxng
+usr/share/searxng-cli/searxng.sh
+usr/share/searxng-cli/searxng.yaml
+usr/share/licenses/searxng-cli/LICENSE

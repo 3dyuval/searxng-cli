@@ -1,5 +1,9 @@
-src/
 pkg/
 searxng-cli/
+src/searxng-cli/
 *.pkg.tar.*
 *.src.tar.*
+*.deb
+*.rpm
+*.tar.gz
+searxng.yaml.tmp
